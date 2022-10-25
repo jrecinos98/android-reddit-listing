@@ -25,14 +25,11 @@ class BaseModule (private val app : Application) {
     @Singleton
     @Provides
     fun providesRedditRepository() : ListingsRepository {
-        return ListingRepositoryImpl(backendComponent.getRemoteDataStore())
+        return ListingRepositoryImpl(
+            backendComponent.getRemoteDataStore(),
+            storageComponent.getLocalDataStore()
+        )
     }
 
-    @Singleton
-    @Provides
-    fun providesDatabaseModule() : String {
-        val db =  storageComponent.providesDatabase()
-        return "Work"
-    }
 
 }
