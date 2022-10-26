@@ -2,9 +2,7 @@ package com.challenge.tti
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.challenge.tti.ui.main.MainFragment
-import com.challenge.tti.ui.main.MainViewModel
-import javax.inject.Inject
+import com.challenge.tti.ui.main.listings.ListingsFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -14,7 +12,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.container, MainFragment.newInstance())
+                .replace(R.id.container, ListingsFragment.newInstance())
                 .commitNow()
         }
     }

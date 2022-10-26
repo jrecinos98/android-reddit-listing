@@ -2,7 +2,7 @@ package com.challenge.tti.di
 
 import com.challenge.di.BaseModule
 import com.challenge.tti.App
-import com.challenge.tti.ui.main.MainFragment
+import com.challenge.tti.ui.main.listings.ListingsFragment
 import dagger.Component
 import javax.inject.Singleton
 
@@ -18,5 +18,5 @@ interface AppComponent {
     }
 
     fun inject(app : App)
-    fun inject(mainFragment: MainFragment)
+    fun inject(listingsFragment: ListingsFragment)
 }

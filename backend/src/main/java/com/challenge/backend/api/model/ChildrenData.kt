@@ -5,6 +5,8 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class ChildrenData(
+    @Json(name = "id")
+    val id : String,
 
     @Json(name = "subreddit")
     val subReddit : String?,
