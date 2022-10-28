@@ -41,6 +41,8 @@ class ListingsPagerFactory private constructor() {
         }
         return Pager(
             config = PagingConfig(
+                //Smaller Page size saves memory and will incur less network requests so long as each request returns at least twice the pageSize.
+                //Paging library seems to strive to locally have at least 2 full sized pages if not at end of pagination.
                 pageSize = 5,
                 enablePlaceholders = false,
                 prefetchDistance = 1 //In the hope network requests will be done sparingly
