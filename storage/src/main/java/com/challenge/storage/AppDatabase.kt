@@ -2,9 +2,6 @@ package com.challenge.storage
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import androidx.room.TypeConverters
-import androidx.room.withTransaction
-import com.challenge.storage.converter.ListingConverter
 import com.challenge.storage.dao.ListingDao
 import com.challenge.storage.dao.RemoteKeyDao
 import com.challenge.storage.entities.DBListing

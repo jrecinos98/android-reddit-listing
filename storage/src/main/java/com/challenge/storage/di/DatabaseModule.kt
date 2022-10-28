@@ -4,7 +4,6 @@ import android.app.Application
 import androidx.room.Room
 import com.challenge.domain.stores.listings.LocalListingDataStore
 import com.challenge.storage.AppDatabase
-import com.challenge.storage.converter.ListingConverter
 import com.challenge.storage.stores.LocalListingDataStoreImpl
 import dagger.Module
 import dagger.Provides

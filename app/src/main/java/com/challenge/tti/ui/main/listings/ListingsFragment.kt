@@ -13,8 +13,10 @@ import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.challenge.domain.entities.ListingType
 import com.challenge.tti.App
+import com.challenge.tti.R
 import com.challenge.tti.ViewModelFactory
 import com.challenge.tti.databinding.FragmentMainBinding
+import com.challenge.tti.ui.main.comments.CommentsFragment
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.flow.collectLatest
@@ -59,7 +61,7 @@ class ListingsFragment : Fragment() {
         binding = FragmentMainBinding.inflate(inflater, container, false)
         listingAdapter = ListingsAdapter().apply {
             onItemClick = {
-
+                navigateToComment(it.id)
             }
         }
 
@@ -105,5 +107,18 @@ class ListingsFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun navigateToComment(postId : String){
+        parentFragmentManager.beginTransaction()
+            .replace(
+                R.id.container,
+                CommentsFragment.newInstance(
+                    postId,
+                    LISTING_TYPE
+                )
+            )
+            .addToBackStack(null)
+            .commit()
     }
 }

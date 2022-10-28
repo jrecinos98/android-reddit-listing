@@ -7,9 +7,9 @@ object Constants {
     const val IMG_DEFAULT = "https://www.reddit.com/static/noimage.png"
 
     object Listings{
-        const val HOT = "hot.json"
-        const val NEW = "new.json"
-        const val RANDOM = "random.json"
-        const val TOP = "top.json"
+        const val HOT = "hot"
+        const val NEW = "new"
+        const val RANDOM = "random"
+        const val TOP = "top"
     }
 }

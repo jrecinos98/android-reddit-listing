@@ -2,6 +2,7 @@ package com.challenge.domain.repositories.listings
 
 import androidx.paging.*
 import com.challenge.domain.entities.ListingType
+import com.challenge.domain.entities.RedditComments
 import com.challenge.domain.entities.RedditPost
 import com.challenge.domain.orEmpty
 import com.challenge.domain.repositories.ListingsPagerFactory
@@ -42,5 +43,16 @@ class ListingRepositoryImpl @Inject constructor(
         )
 
     }
+
+    override suspend fun getPostComments(
+        postId: String,
+        listingType: ListingType
+    ): RedditComments {
+        return remoteListingDataStore.getPostComments(
+            postId,
+            listingType
+        )
+    }
+
 
 }

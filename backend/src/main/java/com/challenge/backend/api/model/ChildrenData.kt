@@ -36,5 +36,12 @@ data class ChildrenData(
     val url : String?,
 
     @Json(name = "created_utc")
-    val createdAtUtc : Int?
+    val createdAtUtc : Int?,
+
+    @Json(name = "body")
+    val body : String?,
+
+    @Json(name = "parent_id")
+    val parent_id : String?
+
 )

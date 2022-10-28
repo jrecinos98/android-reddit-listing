@@ -12,7 +12,7 @@ data class ListingData(
     val before : String?,
 
     @Json(name = "dist")
-    val dist : Int,
+    val dist : Int?,
 
     @Json(name = "modhash")
     val modHash : String?,
