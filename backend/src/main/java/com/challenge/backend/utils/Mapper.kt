@@ -4,6 +4,9 @@ import com.challenge.backend.Constants
 import com.challenge.backend.api.model.ListingResponse
 import com.challenge.domain.entities.ListingType
 import com.challenge.domain.entities.RedditListing
+import com.challenge.domain.entities.RedditPost
+import com.challenge.domain.entities.RemoteKeys
+import com.challenge.domain.orZero
 
 fun ListingType.convert() : String {
     return when(this){
@@ -14,22 +17,14 @@ fun ListingType.convert() : String {
     }
 }
 
-fun String?.orEmpty() : String {
-    return this ?: ""
-}
-
-fun Int?.orZero() : Int {
-    return this ?: 0
-}
-
-fun ListingResponse.convert() : List<RedditListing> {
+fun ListingResponse.convert() : List<RedditPost> {
     return data.children.map {
         with(it.data!!){
             val thumbnail = when(this.thumbnail){
                 null, "", "self", "default" -> Constants.IMG_DEFAULT
                 else -> this.thumbnail
             }
-            RedditListing(
+            RedditPost(
                 this.id,
                 this.subReddit.orEmpty(),
                 this.upvotes.orZero(),
@@ -44,4 +39,31 @@ fun ListingResponse.convert() : List<RedditListing> {
             )
         }
     }
+}
+
+fun ListingResponse.convertToListing() : RedditListing {
+    return RedditListing(
+        remoteKeys = RemoteKeys(data.after, data.before),
+        posts = data.children.map {
+            with(it.data!!){
+                val thumbnail = when(this.thumbnail){
+                    null, "", "self", "default" -> Constants.IMG_DEFAULT
+                    else -> this.thumbnail
+                }
+                RedditPost(
+                    this.id,
+                    this.subReddit.orEmpty(),
+                    this.upvotes.orZero(),
+                    this.downvotes.orZero(),
+                    this.rewardsReceived.orZero(),
+                    this.uid.orEmpty(),
+                    this.username.orEmpty(),
+                    this.title.orEmpty(),
+                    thumbnail,
+                    this.url.orEmpty(),
+                    this.createdAtUtc.orZero()
+                )
+            }
+        }
+    )
 }
