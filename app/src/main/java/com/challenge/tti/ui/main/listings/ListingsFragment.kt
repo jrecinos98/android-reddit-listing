@@ -47,7 +47,6 @@ class ListingsFragment : Fragment() {
 
     private lateinit var listingAdapter : ListingsAdapter
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         App.getAppComponent().inject(this)
         super.onCreate(savedInstanceState)
@@ -59,9 +58,18 @@ class ListingsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentMainBinding.inflate(inflater, container, false)
+
+        initViews()
+        observeListingsFlow()
+        observeLoadState()
+
+        return binding.root
+    }
+
+    private fun initViews(){
         listingAdapter = ListingsAdapter().apply {
             onItemClick = {
-                navigateToComment(it.id)
+                navigateToCommentFragment(it.id, it.title)
             }
         }
 
@@ -74,10 +82,6 @@ class ListingsFragment : Fragment() {
         binding.swipeContainer.setOnRefreshListener {
             listingAdapter.refresh()
         }
-
-        observeListingsFlow()
-        observeLoadState()
-        return binding.root
     }
 
     private fun observeListingsFlow(){
@@ -97,8 +101,6 @@ class ListingsFragment : Fragment() {
     }
 
     private fun observeLoadState(){
-        // Use the CombinedLoadStates provided by the loadStateFlow on the ArticleAdapter to
-        // show progress bars when more data is being fetched
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 listingAdapter.loadStateFlow.collect {
@@ -109,12 +111,13 @@ class ListingsFragment : Fragment() {
         }
     }
 
-    private fun navigateToComment(postId : String){
+    private fun navigateToCommentFragment(postId : String, title : String){
         parentFragmentManager.beginTransaction()
             .replace(
                 R.id.container,
                 CommentsFragment.newInstance(
                     postId,
+                    title,
                     LISTING_TYPE
                 )
             )

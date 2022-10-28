@@ -3,11 +3,11 @@ package com.challenge.backend.stores
 import com.challenge.backend.api.RedditService
 import com.challenge.backend.utils.convert
 import com.challenge.backend.utils.convertToListing
+import com.challenge.domain.entities.Comment
 import com.challenge.domain.entities.ListingType
-import com.challenge.domain.entities.RedditComments
+import com.challenge.domain.entities.PostComments
 import com.challenge.domain.entities.RedditListing
 import com.challenge.domain.stores.listings.RemoteListingDataStore
-import timber.log.Timber
 import javax.inject.Inject
 
 class RemoteListingDataStoreImpl @Inject constructor(
@@ -26,19 +26,21 @@ class RemoteListingDataStoreImpl @Inject constructor(
         ).convertToListing()
     }
 
-    override suspend fun getPostComments(postId: String, listingType: ListingType): RedditComments {
-        val comments = mutableListOf<String?>()
+    override suspend fun getPostComments(postId: String, listingType: ListingType): PostComments {
+        val comments = mutableListOf<Comment>()
         redditApi.getPostComments(
             postId
         ).map {
             it.data.children.map {
                 val comment = it.data?.body
-                if(comment.isNullOrEmpty().not()){
-                    comments.add(comment)
+                if(!comment.isNullOrEmpty()){
+                    comments.add(
+                        Comment(text = comment)
+                    )
                 }
             }
         }
-        return RedditComments( comments =  comments)
+        return PostComments( comments =  comments)
     }
 
 }
