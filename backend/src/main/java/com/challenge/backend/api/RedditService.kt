@@ -8,6 +8,9 @@ import retrofit2.http.Query
 
 interface RedditService {
 
+    /**
+     * Retrieves listing for the provided subReddit sorted by the listing type (new, random, top, etc..)
+     */
     @GET("r/{subReddit}/{resName}.json")
     suspend fun getListing(
         @Path("subReddit") subReddit : String,
@@ -16,6 +19,9 @@ interface RedditService {
         @Query("limit") limit : Int? = 15,
     ) : ListingResponse
 
+    /**
+     * Retrieves comments for a Reddit Post matching the given id
+     */
     @GET("comments/{postId}.json")
     suspend fun getPostComments(
         @Path("postId") postId : String,

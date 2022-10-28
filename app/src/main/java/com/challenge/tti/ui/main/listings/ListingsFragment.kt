@@ -86,15 +86,18 @@ class ListingsFragment : Fragment() {
 
     private fun observeListingsFlow(){
         viewLifecycleOwner.lifecycleScope.launch {
+            //Unsure if necessary
             listingCoroutine?.cancelAndJoin()
-            listingCoroutine = viewLifecycleOwner.lifecycleScope.launch {
+
+            listingCoroutine = viewLifecycleOwner.lifecycleScope.launch(
+                viewModel.exceptionHandler
+            ) {
                 repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    viewModel.fetchRedditListings(
-                        SUB_REDDIT,
-                        LISTING_TYPE
-                    ).collectLatest {
-                        listingAdapter.submitData(it)
-                    }
+                    viewModel
+                        .fetchRedditListings(SUB_REDDIT, LISTING_TYPE)
+                        .collectLatest {
+                            listingAdapter.submitData(it)
+                        }
                 }
             }
         }

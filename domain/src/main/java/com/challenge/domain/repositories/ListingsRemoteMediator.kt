@@ -31,10 +31,7 @@ class ListingsRemoteMediator @Inject constructor(
     }
 
     override suspend fun initialize(): InitializeAction {
-        // Launch remote refresh as soon as paging starts and do not trigger remote prepend or
-        // append until refresh has succeeded. In cases where we don't mind showing out-of-date,
-        // cached offline data, we can return SKIP_INITIAL_REFRESH instead to prevent paging
-        // triggering remote refresh.
+        //SKIP_INITIAL_REFRESH prevents paging triggering remote refresh at start.
         return InitializeAction.SKIP_INITIAL_REFRESH
     }
 
@@ -46,34 +43,31 @@ class ListingsRemoteMediator @Inject constructor(
             Timber.d("RemoteMediator load() called for loadType: $loadType")
             val loadKey = when(loadType){
                 LoadType.REFRESH -> {
+                    //Trigger a database clean when user forces a refresh
                     localDataStore.clearListings(subReddit)
                     null
                 }
+                //Prepend is not currently supported
                 LoadType.PREPEND -> return MediatorResult.Success(endOfPaginationReached = true)
                 LoadType.APPEND -> {
-                    localDataStore.getPagingKeys(
-                        subReddit
-                    ).nextKey
-                        ?: return MediatorResult.Success(
-                            endOfPaginationReached = true
-                        )
+                    localDataStore.getPagingKeys(subReddit).nextKey ?: return MediatorResult.Success(true)
                 }
             }
+
+            //Retrieve a fresh batch of listings from remote using cached remoteKey
             val response = remoteDataStore.getSubredditListing(subReddit,listingType, loadKey)
             //Update local listing cache and new remote key
-            localDataStore.updateListings(
-                subReddit,
-                response.posts,
-                response.remoteKeys
-            )
+            localDataStore.updateListings(subReddit, response.posts, response.remoteKeys)
+
+            //If nextKey is not null there are more listings available in remote source.
             MediatorResult.Success(
                 endOfPaginationReached = response.remoteKeys.nextKey == null
             )
+
         } catch (e: IOException) {
             Timber.e("Error: $e")
             MediatorResult.Error(e)
         } catch (t : Throwable) {
-
             Timber.e("Error: $t")
             MediatorResult.Error(t)
         }

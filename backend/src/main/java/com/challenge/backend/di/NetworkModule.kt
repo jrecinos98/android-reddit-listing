@@ -15,6 +15,10 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import timber.log.Timber
 import javax.inject.Singleton
 
+/**
+ * Dagger Module internal to the backend module. Any instance that is to be exposed will
+ * be exposed by the Backend Component
+ */
 @Module
 internal class NetworkModule {
     @Singleton

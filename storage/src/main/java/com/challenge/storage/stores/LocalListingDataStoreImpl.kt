@@ -8,10 +8,6 @@ import com.challenge.domain.stores.listings.LocalListingDataStore
 import com.challenge.storage.AppDatabase
 import com.challenge.storage.convert
 import com.challenge.storage.entities.DBRemoteKeys
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 class LocalListingDataStoreImpl @Inject constructor(

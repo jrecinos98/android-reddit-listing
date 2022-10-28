@@ -7,11 +7,6 @@ import com.challenge.domain.entities.RedditPost
 
 interface ListingsRepository {
 
-    suspend fun getListing(
-        subReddit : String,
-        listingType : ListingType
-    ) : List<RedditPost>
-
     suspend fun getRedditListing(
         subReddit: String,
         listingType: ListingType

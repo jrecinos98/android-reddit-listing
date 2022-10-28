@@ -16,17 +16,26 @@ import javax.inject.Singleton
 @Module
 class BaseModule (private val app : Application) {
 
+    /**
+     * Instance of BackendComponent that exposes all necessary
+     * objects from the backend module
+     */
     private val backendComponent : BackendComponent by lazy {
         DaggerBackendComponent.builder().build()
     }
 
+    /**
+     * Instance of StorageComponent that exposes all necessary
+     * objects from the storage module
+     */
     private val storageComponent by lazy {
         DaggerStorageComponent.factory().create(app)
     }
 
+    @Singleton
     @Provides
-    fun providesListingsPagerFactory() : ListingsPagerFactory {
-        return ListingsPagerFactory.create()
+    fun providesRedditRepository() : ListingsRepository {
+        val pagerFactory = ListingsPagerFactory.create()
             .addMediator(
                 ListingsRemoteMediator(
                     storageComponent.getLocalDataStore(),
@@ -34,17 +43,10 @@ class BaseModule (private val app : Application) {
                 )
             )
             .addLocalDataStore(storageComponent.getLocalDataStore())
-    }
-
-    @Singleton
-    @Provides
-    fun providesRedditRepository(pagerFactory : ListingsPagerFactory) : ListingsRepository {
         return ListingRepositoryImpl(
             backendComponent.getRemoteDataStore(),
             storageComponent.getLocalDataStore(),
             pagerFactory
         )
     }
-
-
 }

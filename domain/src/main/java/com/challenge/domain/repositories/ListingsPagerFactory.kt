@@ -43,14 +43,14 @@ class ListingsPagerFactory private constructor() {
             config = PagingConfig(
                 pageSize = 30,
                 enablePlaceholders = false,
-                prefetchDistance = 1
+                prefetchDistance = 1 //In the hope network requests will be done sparingly
             ),
             remoteMediator = remoteMediator.apply {
                 setListingType(listingType)
                 setSubReddit(subReddit)
             },
             pagingSourceFactory = {
-                //TODO allow taking in subreddit + type param to load only relevant data from db
+                //TODO possibly allow taking in type param to load more specific data from db
                 localDataStore.getListings(subReddit)
             }
         )

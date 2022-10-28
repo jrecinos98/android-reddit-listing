@@ -7,11 +7,15 @@ import com.challenge.storage.AppDatabase
 import com.challenge.storage.stores.LocalListingDataStoreImpl
 import dagger.Module
 import dagger.Provides
-import timber.log.Timber
 import javax.inject.Singleton
 
+/**
+ * Dagger Module internal to the storage module. Any instance that is to be exposed will
+ * be exposed by the Storage Component
+ */
 @Module
 internal class DatabaseModule {
+
     @Provides
     fun providesDataBase(app : Application) : AppDatabase {
         return Room.databaseBuilder(

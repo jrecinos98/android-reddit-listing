@@ -6,7 +6,6 @@ import com.challenge.storage.dao.ListingDao
 import com.challenge.storage.dao.RemoteKeyDao
 import com.challenge.storage.entities.DBListing
 import com.challenge.storage.entities.DBRemoteKeys
-import timber.log.Timber
 
 @Database(
     entities = [

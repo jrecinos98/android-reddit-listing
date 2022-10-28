@@ -8,8 +8,6 @@ import javax.inject.Inject
 
 /**
  * A Factory class that reduces the boilerplate to initialize the ViewModel within the Activity or a Fragment.
- * Check for usage examples in this codebase and feel free to copy-paste if it will be necessary.
- *
  * Usage example:
  *
  *    @Inject

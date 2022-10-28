@@ -10,28 +10,13 @@ import com.challenge.domain.stores.listings.LocalListingDataStore
 import com.challenge.domain.stores.listings.RemoteListingDataStore
 import javax.inject.Inject
 
+/**
+ * Repository to handle getting Reddit Listings and Comments use cases.
+ */
 class ListingRepositoryImpl @Inject constructor(
     private val remoteListingDataStore : RemoteListingDataStore,
-    private val localListingDataStore: LocalListingDataStore,
     private val listingsPagerFactory: ListingsPagerFactory
 ) : ListingsRepository {
-
-    override suspend fun getListing(
-        subReddit: String,
-        listingType: ListingType
-    ) : List<RedditPost> {
-
-        val listings = remoteListingDataStore.getSubredditListing(
-            subReddit,
-            listingType
-        )
-        localListingDataStore.updateListings(
-            listings.posts.firstOrNull()?.subReddit.orEmpty(),
-            listings.posts,
-            listings.remoteKeys
-        )
-        return listings.posts
-    }
 
     override suspend fun getRedditListing(
         subReddit: String,
@@ -41,7 +26,6 @@ class ListingRepositoryImpl @Inject constructor(
             subReddit,
             listingType
         )
-
     }
 
     override suspend fun getPostComments(
@@ -53,6 +37,5 @@ class ListingRepositoryImpl @Inject constructor(
             listingType
         )
     }
-
 
 }
