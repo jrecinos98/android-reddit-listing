@@ -55,6 +55,10 @@ dependencies {
     kapt "com.google.dagger:dagger-compiler:${daggerVersion}"
     kapt "com.google.dagger:dagger-android-processor:${daggerVersion}"
 
+    //Paging
+    api 'androidx.paging:paging-common-ktx:3.1.1'
+    api "androidx.paging:paging-runtime-ktx:3.1.1"
+
     // Testing
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'org.robolectric:robolectric:4.7.3'

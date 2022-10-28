@@ -2,12 +2,14 @@ package com.challenge.domain.stores.listings
 
 import com.challenge.domain.entities.ListingType
 import com.challenge.domain.entities.RedditListing
+import com.challenge.domain.entities.RedditPost
 
 interface RemoteListingDataStore {
 
     suspend fun getSubredditListing(
         subReddit : String,
-        listingType: ListingType
-    ) : List<RedditListing>
+        listingType: ListingType,
+        nextKey: String? = null
+    ) : RedditListing
 
 }
