@@ -45,7 +45,6 @@ class BaseModule (private val app : Application) {
             .addLocalDataStore(storageComponent.getLocalDataStore())
         return ListingRepositoryImpl(
             backendComponent.getRemoteDataStore(),
-            storageComponent.getLocalDataStore(),
             pagerFactory
         )
     }

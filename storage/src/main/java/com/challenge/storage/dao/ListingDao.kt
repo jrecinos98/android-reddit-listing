@@ -16,7 +16,7 @@ interface ListingDao {
     suspend fun updateListings(listings : List<DBListing>)
 
     @Query(
-        "SELECT * FROM ${DBListing.TABLE} WHERE ${DBListing.SUB_REDDIT} = :subReddit"
+        "SELECT * FROM ${DBListing.TABLE} WHERE ${DBListing.SUB_REDDIT} = :subReddit ORDER BY `key`"
     )
     fun getListings(subReddit : String) : PagingSource<Int, RedditPost>
 

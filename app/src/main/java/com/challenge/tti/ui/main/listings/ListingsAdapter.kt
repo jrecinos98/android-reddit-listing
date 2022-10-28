@@ -1,5 +1,7 @@
 package com.challenge.tti.ui.main.listings
 
+import android.os.Build
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,20 +13,21 @@ import com.bumptech.glide.Glide
 import com.challenge.domain.entities.RedditPost
 import com.challenge.tti.R
 import com.challenge.tti.databinding.ItemListingBinding
+import com.challenge.tti.toSpannedHtml
 
 class ListingsAdapter : PagingDataAdapter<RedditPost, RedditListingViewHolder>(diff) {
 
     companion object{
         val diff = object : DiffUtil.ItemCallback<RedditPost>(){
             override fun areItemsTheSame(oldItem: RedditPost, newItem: RedditPost): Boolean {
-                return oldItem.id == newItem.id
+                return oldItem.id == newItem.id  && oldItem.uid == newItem.uid
             }
 
             override fun areContentsTheSame(
                 oldItem: RedditPost,
                 newItem: RedditPost
             ): Boolean {
-                return oldItem == newItem
+                return oldItem.thumbnail == newItem.thumbnail && oldItem.title == newItem.title
             }
 
         }
@@ -49,8 +52,8 @@ class ListingsAdapter : PagingDataAdapter<RedditPost, RedditListingViewHolder>(d
         getItem(position)?.let { item ->
             val binding = ItemListingBinding.bind(holder.itemView)
             with(holder.itemView){
-                binding.title.text = item.title
-                Glide.with(context).load(item.url).into(binding.image)
+                binding.title.text = item.title.toSpannedHtml()
+                Glide.with(context).load(item.thumbnail).into(binding.image)
             }
         }
     }

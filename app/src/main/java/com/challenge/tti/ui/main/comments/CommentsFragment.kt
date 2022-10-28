@@ -11,10 +11,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.challenge.domain.entities.ListingType
 import com.challenge.domain.orEmpty
-import com.challenge.tti.App
-import com.challenge.tti.MainActivity
-import com.challenge.tti.R
-import com.challenge.tti.ViewModelFactory
+import com.challenge.tti.*
 import com.challenge.tti.databinding.FragmentCommentsBinding
 import com.challenge.tti.databinding.FragmentMainBinding
 import com.challenge.tti.ui.main.listings.ListingsViewModel
@@ -87,7 +84,7 @@ class CommentsFragment : Fragment() {
 
     private fun setToolbarTitle(title : String?){
         if(title.isNullOrEmpty().not()){
-            (requireActivity() as MainActivity).supportActionBar?.title = title
+            (requireActivity() as MainActivity).supportActionBar?.title = title.toSpannedHtml()
         }
     }
 

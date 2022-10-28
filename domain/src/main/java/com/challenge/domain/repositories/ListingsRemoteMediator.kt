@@ -32,7 +32,7 @@ class ListingsRemoteMediator @Inject constructor(
 
     override suspend fun initialize(): InitializeAction {
         //SKIP_INITIAL_REFRESH prevents paging triggering remote refresh at start.
-        return InitializeAction.SKIP_INITIAL_REFRESH
+        return InitializeAction.LAUNCH_INITIAL_REFRESH
     }
 
     override suspend fun load(
@@ -42,11 +42,8 @@ class ListingsRemoteMediator @Inject constructor(
         return try {
             Timber.d("RemoteMediator load() called for loadType: $loadType")
             val loadKey = when(loadType){
-                LoadType.REFRESH -> {
-                    //Trigger a database clean when user forces a refresh
-                    localDataStore.clearListings(subReddit)
-                    null
-                }
+                LoadType.REFRESH -> null
+
                 //Prepend is not currently supported
                 LoadType.PREPEND -> return MediatorResult.Success(endOfPaginationReached = true)
                 LoadType.APPEND -> {
@@ -56,6 +53,11 @@ class ListingsRemoteMediator @Inject constructor(
 
             //Retrieve a fresh batch of listings from remote using cached remoteKey
             val response = remoteDataStore.getSubredditListing(subReddit,listingType, loadKey)
+
+            //Trigger a database clean when user forces a refresh
+            if(loadType == LoadType.REFRESH){
+                localDataStore.clearListings(subReddit)
+            }
             //Update local listing cache and new remote key
             localDataStore.updateListings(subReddit, response.posts, response.remoteKeys)
 

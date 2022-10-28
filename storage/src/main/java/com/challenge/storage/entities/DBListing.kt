@@ -6,7 +6,6 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = DBListing.TABLE)
 data class DBListing (
-    @PrimaryKey
     val id : String,
     @ColumnInfo(name = SUB_REDDIT)
     val subReddit : String,
@@ -19,7 +18,9 @@ data class DBListing (
     val title : String,
     val thumbnail : String,
     val url : String,
-    val createdAt : Int
+    val createdAt : Int,
+    @PrimaryKey(autoGenerate = true)
+    val key :Int = 0,
 ){
     companion object{
         const val TABLE = "listing"

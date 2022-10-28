@@ -41,7 +41,7 @@ class ListingsPagerFactory private constructor() {
         }
         return Pager(
             config = PagingConfig(
-                pageSize = 30,
+                pageSize = 5,
                 enablePlaceholders = false,
                 prefetchDistance = 1 //In the hope network requests will be done sparingly
             ),

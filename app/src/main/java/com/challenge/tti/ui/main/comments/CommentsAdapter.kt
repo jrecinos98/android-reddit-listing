@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.challenge.domain.entities.Comment
 import com.challenge.tti.R
 import com.challenge.tti.databinding.ItemCommentBinding
+import com.challenge.tti.toSpannedHtml
 
 class CommentsAdapter : ListAdapter<Comment, RedditCommentViewHolder>(diff) {
 
@@ -38,7 +39,7 @@ class CommentsAdapter : ListAdapter<Comment, RedditCommentViewHolder>(diff) {
     override fun onBindViewHolder(holder: RedditCommentViewHolder, position: Int) {
         getItem(position)?.let { item ->
             val binding = ItemCommentBinding.bind(holder.itemView)
-            binding.commentView.text = item.text
+            binding.commentView.text = item.text.toSpannedHtml()
         }
     }
 }

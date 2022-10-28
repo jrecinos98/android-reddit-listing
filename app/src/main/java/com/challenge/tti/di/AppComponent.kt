@@ -7,6 +7,10 @@ import com.challenge.tti.ui.main.listings.ListingsFragment
 import dagger.Component
 import javax.inject.Singleton
 
+/**
+ * Main app component. Relies on BaseModule to provide Repository instance and other objects
+ * required from modules that the app module does not directly depend on.
+ */
 @Singleton
 @Component(modules = [AppModule::class, BaseModule::class])
 interface AppComponent {

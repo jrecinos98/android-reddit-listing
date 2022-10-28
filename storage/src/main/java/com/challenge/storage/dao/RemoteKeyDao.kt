@@ -11,7 +11,7 @@ import com.challenge.storage.entities.DBRemoteKeys
 interface RemoteKeyDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(DBRemoteKeys: DBRemoteKeys)
+    suspend fun insert(DBRemoteKeys: DBRemoteKeys)
 
     @Query("SELECT * FROM ${DBRemoteKeys.TABLE} WHERE id = :subReddit")
     suspend fun getRemoteKeys(subReddit : String): DBRemoteKeys?

@@ -26,10 +26,7 @@ class LocalListingDataStoreImpl @Inject constructor(
         remoteKeys: RemoteKeys
     ) {
         appDatabase.withTransaction {
-            appDatabase.listingsDao().updateListings(
-                listings.map { it.convert() }
-            )
-            //Perform additional db operations
+            appDatabase.listingsDao().updateListings(listings.map { it.convert() })
             appDatabase.keysDao().insert(
                 DBRemoteKeys(id = subReddit, prevKey = remoteKeys.prevKey, nextKey = remoteKeys.nextKey)
             )
