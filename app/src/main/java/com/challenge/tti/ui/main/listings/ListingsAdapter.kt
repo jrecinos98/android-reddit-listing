@@ -3,25 +3,26 @@ package com.challenge.tti.ui.main.listings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.challenge.domain.entities.RedditListing
+import com.challenge.domain.entities.RedditPost
 import com.challenge.tti.R
 import com.challenge.tti.databinding.ItemListingBinding
 
-class ListingsAdapter : ListAdapter<RedditListing, RedditListingViewHolder>(diff) {
+class ListingsAdapter : PagingDataAdapter<RedditPost, RedditListingViewHolder>(diff) {
 
     companion object{
-        val diff = object : DiffUtil.ItemCallback<RedditListing>(){
-            override fun areItemsTheSame(oldItem: RedditListing, newItem: RedditListing): Boolean {
+        val diff = object : DiffUtil.ItemCallback<RedditPost>(){
+            override fun areItemsTheSame(oldItem: RedditPost, newItem: RedditPost): Boolean {
                 return oldItem.id == newItem.id
             }
 
             override fun areContentsTheSame(
-                oldItem: RedditListing,
-                newItem: RedditListing
+                oldItem: RedditPost,
+                newItem: RedditPost
             ): Boolean {
                 return oldItem == newItem
             }
@@ -29,7 +30,7 @@ class ListingsAdapter : ListAdapter<RedditListing, RedditListingViewHolder>(diff
         }
     }
 
-    var onItemClick : ((RedditListing) -> Unit)? = null
+    var onItemClick : ((RedditPost) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RedditListingViewHolder {
         return RedditListingViewHolder(
@@ -37,17 +38,20 @@ class ListingsAdapter : ListAdapter<RedditListing, RedditListingViewHolder>(diff
                 .inflate(R.layout.item_listing, parent, false)
         ).apply {
             itemView.setOnClickListener {
-                onItemClick?.invoke(currentList[adapterPosition])
+                getItem(absoluteAdapterPosition)?.let {
+                    onItemClick?.invoke(it)
+                }
             }
         }
     }
 
     override fun onBindViewHolder(holder: RedditListingViewHolder, position: Int) {
-        val item = currentList[position]
-        val binding = ItemListingBinding.bind(holder.itemView)
-        with(holder.itemView){
-            binding.title.text = item.title
-            Glide.with(context).load(item.thumbnail).into(binding.image)
+        getItem(position)?.let { item ->
+            val binding = ItemListingBinding.bind(holder.itemView)
+            with(holder.itemView){
+                binding.title.text = item.title
+                Glide.with(context).load(item.url).into(binding.image)
+            }
         }
     }
 }

@@ -5,17 +5,33 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.challenge.domain.entities.ListingType
 import com.challenge.tti.App
 import com.challenge.tti.ViewModelFactory
 import com.challenge.tti.databinding.FragmentMainBinding
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancelAndJoin
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 class ListingsFragment : Fragment() {
 
     companion object {
         fun newInstance() = ListingsFragment()
+
+        val SUB_REDDIT = "pic"
+        val LISTING_TYPE = ListingType.NEW
     }
+
+    private var listingCoroutine : Job? = null
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory<ListingsViewModel>
@@ -52,14 +68,42 @@ class ListingsFragment : Fragment() {
             layoutManager = LinearLayoutManager(activity)
             adapter = listingAdapter
         }
-        observeRedditListing()
 
+        binding.swipeContainer.setOnRefreshListener {
+            listingAdapter.refresh()
+        }
+
+        observeListingsFlow()
+        observeLoadState()
         return binding.root
     }
 
-    fun observeRedditListing(){
-        viewModel.listingObs.observe(viewLifecycleOwner){
-            listingAdapter.submitList(it)
+    private fun observeListingsFlow(){
+        viewLifecycleOwner.lifecycleScope.launch {
+            listingCoroutine?.cancelAndJoin()
+            listingCoroutine = viewLifecycleOwner.lifecycleScope.launch {
+                repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    viewModel.fetchRedditListings(
+                        SUB_REDDIT,
+                        LISTING_TYPE
+                    ).collectLatest {
+                        listingAdapter.submitData(it)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun observeLoadState(){
+        // Use the CombinedLoadStates provided by the loadStateFlow on the ArticleAdapter to
+        // show progress bars when more data is being fetched
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                listingAdapter.loadStateFlow.collect {
+                    binding.swipeContainer.isRefreshing = it.mediator?.refresh is LoadState.Loading
+                    binding.appendProgress.isVisible = it.mediator?.append is LoadState.Loading
+                }
+            }
         }
     }
 }
