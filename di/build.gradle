@@ -44,8 +44,7 @@ dependencies {
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    //Dagger
-    kapt "com.google.dagger:dagger-compiler:${daggerVersion}"
-    kapt "com.google.dagger:dagger-android-processor:${daggerVersion}"
+    //Hilt
+    kapt "com.google.dagger:hilt-compiler:${hilt_version}"
 
 }

@@ -3,6 +3,8 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
     id 'kotlin-android-extensions'
+
+    id 'dagger.hilt.android.plugin'
 }
 
 android {
@@ -76,9 +78,9 @@ dependencies {
     kapt "com.github.bumptech.glide:compiler:$glide_version"
     implementation "com.github.bumptech.glide:okhttp3-integration:$glide_version"
 
-    //Dagger
-    kapt "com.google.dagger:dagger-compiler:${daggerVersion}"
-    kapt "com.google.dagger:dagger-android-processor:${daggerVersion}"
+    //Hilt
+    kapt "com.google.dagger:hilt-compiler:${hilt_version}"
+    implementation "com.google.dagger:hilt-android:${hilt_version}"
 
 
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.8.1'
@@ -95,4 +97,8 @@ dependencies {
     testImplementation 'androidx.arch.core:core-testing:2.1.0'
     testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.0'
 
+}
+
+kapt {
+    correctErrorTypes true
 }
