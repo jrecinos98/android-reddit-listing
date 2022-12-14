@@ -11,6 +11,7 @@ import javax.inject.Singleton
 @Component(modules = [NetworkModule::class])
 interface BackendComponent {
 
+    @Singleton
     fun getRemoteDataStore() : RemoteListingDataStore
 
 }

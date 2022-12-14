@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.challenge.domain.entities.ListingType
@@ -15,9 +16,11 @@ import com.challenge.tti.*
 import com.challenge.tti.databinding.FragmentCommentsBinding
 import com.challenge.tti.databinding.FragmentMainBinding
 import com.challenge.tti.ui.main.listings.ListingsViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class CommentsFragment : Fragment() {
 
     companion object{
@@ -41,19 +44,12 @@ class CommentsFragment : Fragment() {
         const val COMMENT_LISTING = "listing"
     }
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelFactory<CommentsViewModel>
-    private val viewModel: CommentsViewModel by lazy {
-        viewModelFactory.get<CommentsViewModel>(
-            requireActivity()
-        )
-    }
+    private val viewModel: CommentsViewModel by viewModels()
 
     private lateinit var binding : FragmentCommentsBinding
     private lateinit var commentsAdapter : CommentsAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        App.getAppComponent().inject(this)
         super.onCreate(savedInstanceState)
     }
 

@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -17,6 +18,7 @@ import com.challenge.tti.R
 import com.challenge.tti.ViewModelFactory
 import com.challenge.tti.databinding.FragmentMainBinding
 import com.challenge.tti.ui.main.comments.CommentsFragment
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.flow.collectLatest
@@ -24,6 +26,7 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class ListingsFragment : Fragment() {
 
     companion object {
@@ -35,20 +38,13 @@ class ListingsFragment : Fragment() {
 
     private var listingCoroutine : Job? = null
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelFactory<ListingsViewModel>
-    private val viewModel: ListingsViewModel by lazy {
-        viewModelFactory.get<ListingsViewModel>(
-            requireActivity()
-        )
-    }
+    private val viewModel: ListingsViewModel by viewModels()
 
     private lateinit var binding : FragmentMainBinding
 
     private lateinit var listingAdapter : ListingsAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        App.getAppComponent().inject(this)
         super.onCreate(savedInstanceState)
     }
 
