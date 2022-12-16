@@ -3,6 +3,8 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
     id 'kotlin-android-extensions'
+
+    id 'dagger.hilt.android.plugin'
 }
 
 android {
@@ -48,7 +50,12 @@ android {
 dependencies {
 
     implementation(project(path: ":domain"))
-    implementation(project(path: ":di"))
+
+    //Reduce dependency tree depth by removing :di dependency (which aggregated both dependencies)
+    //Any change to :backend or :storage modules would cause a cache miss for :di module requiring
+    //a rebuild of :di build cache (which I suspect might recompile both :storage and :backend)
+    implementation project(path: ':backend')
+    implementation project(path: ':storage')
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
@@ -76,9 +83,9 @@ dependencies {
     kapt "com.github.bumptech.glide:compiler:$glide_version"
     implementation "com.github.bumptech.glide:okhttp3-integration:$glide_version"
 
-    //Dagger
-    kapt "com.google.dagger:dagger-compiler:${daggerVersion}"
-    kapt "com.google.dagger:dagger-android-processor:${daggerVersion}"
+    //Hilt
+    kapt "com.google.dagger:hilt-compiler:${hilt_version}"
+    implementation "com.google.dagger:hilt-android:${hilt_version}"
 
 
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.8.1'
@@ -95,4 +102,13 @@ dependencies {
     testImplementation 'androidx.arch.core:core-testing:2.1.0'
     testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.0'
 
+}
+//If used correctly (and dependencies structured correctly) we could avoid dependency on a base module
+//thus reducing dependency depth and potentially better incremental build times.
+hilt {
+    enableAggregatingTask = true
+}
+
+kapt {
+    correctErrorTypes true
 }

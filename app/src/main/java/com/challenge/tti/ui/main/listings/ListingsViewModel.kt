@@ -5,10 +5,12 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import com.challenge.domain.entities.ListingType
 import com.challenge.domain.repositories.listings.ListingsRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import timber.log.Timber
 import javax.inject.Inject
 
+@HiltViewModel
 class ListingsViewModel @Inject constructor(
     private val repository: ListingsRepository
 ) : ViewModel() {

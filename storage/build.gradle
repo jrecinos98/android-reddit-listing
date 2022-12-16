@@ -48,9 +48,8 @@ dependencies {
     implementation "androidx.room:room-ktx:2.4.3"
     implementation "androidx.room:room-paging:$room_version"
 
-    //Dagger
-    kapt "com.google.dagger:dagger-compiler:${daggerVersion}"
-    kapt "com.google.dagger:dagger-android-processor:${daggerVersion}"
+    //Hilt
+    kapt "com.google.dagger:hilt-compiler:${hilt_version}"
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation "androidx.test.ext:junit:$ext_junit_version"

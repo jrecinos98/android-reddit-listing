@@ -17,5 +17,4 @@ rootProject.name = "TTiChallenge"
 include ':app'
 include ':domain'
 include ':backend'
-include ':di'
 include ':storage'

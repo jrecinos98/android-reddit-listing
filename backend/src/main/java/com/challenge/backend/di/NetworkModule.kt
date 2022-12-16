@@ -7,6 +7,9 @@ import com.challenge.domain.stores.listings.RemoteListingDataStore
 import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
+import dagger.hilt.migration.DisableInstallInCheck
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -19,11 +22,14 @@ import javax.inject.Singleton
  * Dagger Module internal to the backend module. Any instance that is to be exposed will
  * be exposed by the Backend Component
  */
+//Required annotation to prevent build time error with Hilt. Migration to Hilt Pending
+@InstallIn(SingletonComponent::class)
 @Module
 internal class NetworkModule {
+
     @Singleton
     @Provides
-    fun provideMoshi() : Moshi{
+    fun provideMoshi() : Moshi {
         return Moshi.Builder().build()
     }
 
@@ -51,6 +57,7 @@ internal class NetworkModule {
         return retrofit.create(RedditService::class.java)
     }
 
+    @Singleton
     @Provides
     fun provideRemoteListingDataStore(
         remoteStore : RemoteListingDataStoreImpl
