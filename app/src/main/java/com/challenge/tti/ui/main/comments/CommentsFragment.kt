@@ -8,6 +8,8 @@ import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.challenge.domain.entities.ListingType
@@ -23,28 +25,9 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class CommentsFragment : Fragment() {
 
-    companion object{
-        fun newInstance(
-            postId : String,
-            postTitle : String,
-            listingType: ListingType
-        ): CommentsFragment {
-            val args = Bundle().apply {
-                putString(POST_ID_KEY, postId)
-                putString(POST_TITLE, postTitle)
-                putSerializable(COMMENT_LISTING, listingType)
-            }
-            val fragment = CommentsFragment()
-            fragment.arguments = args
-            return fragment
-        }
+    private val args : CommentsFragmentArgs by navArgs()
 
-        const val POST_ID_KEY = "postId"
-        const val POST_TITLE = "postTitle"
-        const val COMMENT_LISTING = "listing"
-    }
-
-    private val viewModel: CommentsViewModel by viewModels()
+    private val viewModel: CommentsViewModel by hiltNavGraphViewModels(R.id.comment_nav_graph)
 
     private lateinit var binding : FragmentCommentsBinding
     private lateinit var commentsAdapter : CommentsAdapter
@@ -67,7 +50,7 @@ class CommentsFragment : Fragment() {
     }
 
     private fun initViews(){
-        setToolbarTitle(arguments?.getString(POST_TITLE))
+        setToolbarTitle(args.title)
         commentsAdapter = CommentsAdapter()
         binding.commentStore.apply {
             setHasFixedSize(true)
@@ -87,8 +70,8 @@ class CommentsFragment : Fragment() {
     private fun observeComments(){
         binding.progress.isVisible = true
         viewModel.getPostComments(
-            arguments?.getString(POST_ID_KEY).orEmpty(),
-            (arguments?.getSerializable(COMMENT_LISTING) ?: ListingType.TOP) as ListingType
+            args.id,
+            args.type
         ).observe(viewLifecycleOwner){
             binding.progress.isVisible = false
             commentsAdapter.submitList(it.comments)

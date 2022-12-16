@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">TTiChallenge</string>
+    <string name="listingsLabel">Listings</string>
+    <string name="commentsLabel">Comments</string>
 </resources>

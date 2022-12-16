@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/listingsFragment">
+
+    <fragment
+        android:id="@+id/listingsFragment"
+        android:name="com.challenge.tti.ui.main.listings.ListingsFragment"
+        android:label="@string/listingsLabel"
+        tools:layout="@layout/fragment_main">
+
+        <action
+            android:id="@+id/action_listing_to_comment_action"
+            app:destination="@id/comment_nav_graph"
+            app:launchSingleTop="true"
+            app:popExitAnim="@android:anim/fade_out"
+            >
+            <argument
+                android:name="id"
+                android:defaultValue=""
+                app:argType="string"
+                />
+            <argument
+                android:name="title"
+                android:defaultValue=""
+                app:argType="string"
+                />
+            <argument
+                android:name="type"
+                app:argType="com.challenge.domain.entities.ListingType"
+                />
+        </action>
+
+    </fragment>
+
+    <include app:graph="@navigation/comment_nav_graph"/>
+
+</navigation>

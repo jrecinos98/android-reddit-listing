@@ -7,9 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.challenge.domain.entities.ListingType
@@ -30,7 +32,6 @@ import javax.inject.Inject
 class ListingsFragment : Fragment() {
 
     companion object {
-        fun newInstance() = ListingsFragment()
 
         val SUB_REDDIT = "pic"
         val LISTING_TYPE = ListingType.NEW
@@ -38,7 +39,7 @@ class ListingsFragment : Fragment() {
 
     private var listingCoroutine : Job? = null
 
-    private val viewModel: ListingsViewModel by viewModels()
+    private val viewModel: ListingsViewModel by hiltNavGraphViewModels(R.id.nav_graph)
 
     private lateinit var binding : FragmentMainBinding
 
@@ -111,16 +112,10 @@ class ListingsFragment : Fragment() {
     }
 
     private fun navigateToCommentFragment(postId : String, title : String){
-        parentFragmentManager.beginTransaction()
-            .replace(
-                R.id.container,
-                CommentsFragment.newInstance(
-                    postId,
-                    title,
-                    LISTING_TYPE
-                )
-            )
-            .addToBackStack(null)
-            .commit()
+        findNavController().navigate(ListingsFragmentDirections.actionListingToCommentAction(
+            title = title,
+            id = postId,
+            type = LISTING_TYPE
+        ))
     }
 }
