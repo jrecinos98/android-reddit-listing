@@ -8,6 +8,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -26,7 +27,7 @@ class CommentsFragment : Fragment() {
 
     private val args : CommentsFragmentArgs by navArgs()
 
-    private val viewModel: CommentsViewModel by viewModels()
+    private val viewModel: CommentsViewModel by hiltNavGraphViewModels(R.id.comment_nav_graph)
 
     private lateinit var binding : FragmentCommentsBinding
     private lateinit var commentsAdapter : CommentsAdapter

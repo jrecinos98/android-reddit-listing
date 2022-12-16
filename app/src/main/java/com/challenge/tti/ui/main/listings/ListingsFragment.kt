@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -31,7 +32,6 @@ import javax.inject.Inject
 class ListingsFragment : Fragment() {
 
     companion object {
-        fun newInstance() = ListingsFragment()
 
         val SUB_REDDIT = "pic"
         val LISTING_TYPE = ListingType.NEW
@@ -39,7 +39,7 @@ class ListingsFragment : Fragment() {
 
     private var listingCoroutine : Job? = null
 
-    private val viewModel: ListingsViewModel by viewModels()
+    private val viewModel: ListingsViewModel by hiltNavGraphViewModels(R.id.nav_graph)
 
     private lateinit var binding : FragmentMainBinding
 
