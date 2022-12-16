@@ -9,14 +9,14 @@ import com.challenge.domain.stores.listings.RemoteListingDataStore
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
+import dagger.hilt.android.components.ViewModelComponent
+import dagger.hilt.android.scopes.ViewModelScoped
 
-@InstallIn(SingletonComponent::class)
+@InstallIn(ViewModelComponent::class)
 @Module
 class RepositoryModule {
 
-    @Singleton
+    @ViewModelScoped
     @Provides
     fun providesRedditRepository(
         localListingDataStore: LocalListingDataStore,
