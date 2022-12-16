@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.challenge.domain.entities.ListingType
@@ -111,16 +112,10 @@ class ListingsFragment : Fragment() {
     }
 
     private fun navigateToCommentFragment(postId : String, title : String){
-        parentFragmentManager.beginTransaction()
-            .replace(
-                R.id.container,
-                CommentsFragment.newInstance(
-                    postId,
-                    title,
-                    LISTING_TYPE
-                )
-            )
-            .addToBackStack(null)
-            .commit()
+        findNavController().navigate(ListingsFragmentDirections.actionListingToCommentAction(
+            title = title,
+            id = postId,
+            type = LISTING_TYPE
+        ))
     }
 }
