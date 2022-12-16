@@ -7,7 +7,9 @@ import com.challenge.storage.AppDatabase
 import com.challenge.storage.stores.LocalListingDataStoreImpl
 import dagger.Module
 import dagger.Provides
-import dagger.hilt.migration.DisableInstallInCheck
+import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
 /**
@@ -15,12 +17,12 @@ import javax.inject.Singleton
  * be exposed by the Storage Component
  */
 //Required annotation to prevent build time error with Hilt. Migration to Hilt Pending
-@DisableInstallInCheck
+@InstallIn(SingletonComponent::class)
 @Module
 class DatabaseModule {
 
     @Provides
-    fun providesDataBase(appContext : Context) : AppDatabase {
+    fun providesDataBase(@ApplicationContext appContext : Context) : AppDatabase {
         return Room.databaseBuilder(
             appContext,
             AppDatabase::class.java,

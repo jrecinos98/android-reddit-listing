@@ -98,6 +98,11 @@ dependencies {
     testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.0'
 
 }
+//If used correctly (and dependencies structured correctly) we could avoid dependency on a base module
+//thus reducing dependency depth and potentially better incremental build times.
+hilt {
+    enableAggregatingTask = true
+}
 
 kapt {
     correctErrorTypes true
