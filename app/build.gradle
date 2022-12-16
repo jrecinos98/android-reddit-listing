@@ -50,7 +50,12 @@ android {
 dependencies {
 
     implementation(project(path: ":domain"))
-    implementation(project(path: ":di"))
+
+    //Reduce dependency tree depth by removing :di dependency (which aggregated both dependencies)
+    //Any change to :backend or :storage modules would cause a cache miss for :di module requiring
+    //a rebuild of :di build cache (which I suspect might recompile both :storage and :backend)
+    implementation project(path: ':backend')
+    implementation project(path: ':storage')
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 

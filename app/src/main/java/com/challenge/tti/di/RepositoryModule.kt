@@ -1,4 +1,4 @@
-package com.challenge.di
+package com.challenge.tti.di
 
 import com.challenge.domain.repositories.ListingsPagerFactory
 import com.challenge.domain.repositories.ListingsRemoteMediator
@@ -6,7 +6,6 @@ import com.challenge.domain.repositories.listings.ListingRepositoryImpl
 import com.challenge.domain.repositories.listings.ListingsRepository
 import com.challenge.domain.stores.listings.LocalListingDataStore
 import com.challenge.domain.stores.listings.RemoteListingDataStore
-
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,7 +14,7 @@ import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
 @Module
-class BaseModule {
+class RepositoryModule {
 
     @Singleton
     @Provides
